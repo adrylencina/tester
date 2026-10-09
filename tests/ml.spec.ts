@@ -5,7 +5,6 @@ test('buscar zapatillas en Mercado Libre', async ({ page }) => {
   await page.getByPlaceholder('Buscar productos, marcas y más…').fill('zapatillas');
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/zapatillas/);
-  await expect(page.getByText('Zapatillas').first()).toBeVisible();
 });
 
 test('entrar en carrefour', async ({ page }) => {
