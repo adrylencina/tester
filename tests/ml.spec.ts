@@ -1,17 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-test('mi primera compra automatica', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-  await page.locator('#user-name').fill('standard_user');
-  await page.locator('#password').fill('secret_sauce');
-  await page.locator('#login-button').click();
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await page.locator('.shopping_cart_link').click();
-  await page.locator('#checkout').click();
-  await page.locator('#first-name').fill('Juan');
-  await page.locator('#last-name').fill('Perez');
-  await page.locator('#postal-code').fill('1663');
-  await page.locator('#continue').click();
-  await page.locator('#finish').click();
-  await expect(page.locator('.complete-header')).toHaveText('Thank you for your order!');
+test('buscar zapatillas en Mercado Libre', async ({ page }) => {
+  await page.goto('https://www.mercadolibre.com.ar/');
+  await page.getByPlaceholder('Buscar productos, marcas y más…').fill('zapatillas');
+  await page.getByPlaceholder('Buscar productos, marcas y más…').press('Enter');
+  await expect(page).toHaveURL(/.*zapatillas/);
+  await expect(page.getByText('Zapatillas').first()).toBeVisible();
+});
+
+test('entrar en carrefour', async ({ page }) => {
+  await page.goto('https://www.carrefour.com.ar/');
+  await page.getByText('Electro').first().click();
+  await expect(page).toHaveURL(/.*electro/);
 });
