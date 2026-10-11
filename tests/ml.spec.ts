@@ -1,14 +1,23 @@
 import { test, expect } from '@playwright/test';
 
-test('buscar zapatillas en Mercado Libre', async ({ page }) => {
-  await page.goto('https://www.mercadolibre.com.ar/');
-  await page.getByPlaceholder('Buscar productos, marcas y más…').fill('zapatillas');
-  await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/zapatillas/);
-});
+test('Punto 16 - Crear usuario Rey - igual que Postman', async ({ request }) => {
+  // Esto es lo mismo que tu POST {{base_url}}/api/users
+  // con Body > raw > JSON
+  const response = await request.post('https://reqres.in/api/users', {
+    data: {
+      "name": "Rey",
+      "job": "QA Automation"
+    }
+  });
 
-test('entrar en carrefour', async ({ page }) => {
-  await page.goto('https://www.carrefour.com.ar/');
-  await page.getByText('Electro').first().click();
-  await expect(page).toHaveURL(/electro/i);
+  // Validamos que sea 201 Created, como viste en Postman abajo
+  expect(response.status()).toBe(201);
+
+  const body = await response.json();
+  
+  console.log(body); // Te va a dar id: 413 como en Postman
+
+  expect(body.name).toBe("Rey");
+  expect(body.job).toBe("QA Automation");
+  expect(body).toHaveProperty('id');
 });
